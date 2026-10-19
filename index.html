@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Roylyn E. Asuncion Optical Clinic System</title>
+        
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #EFEFEF;
+                margin: 0;
+                padding: 0;
+                color: #333333;
+                overflow-x: hidden;
+            }
+
+            .page-container {
+                display: none;
+            }
+            .page-container.active {
+                display: block;
+            }
+
+            /* 1. FULLSCREEN LANDING PAGE */
+            .landing-wrapper {
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+                background: url('backgroundfinal.png') no-repeat center center;
+                background-size: 100% 100%;
+                overflow: hidden;
+            }
+
+            /* "Get Started" Button */
+            .get-started-btn {
+                position: absolute;
+                left: 36%;
+                bottom: 14%;
+                padding: 14px 34px;
+                font-size: 22px;
+                font-weight: bold;
+                color: #ffffff;
+                background-color: transparent;
+                border: 2.5px solid #ffffff;
+                border-radius: 40px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.3s ease;
+                box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+            }
+
+            .get-started-btn:hover {
+                background-color: #ffffff;
+                color: #006647;
+                transform: translateY(-2px);
+            }
+
+            /* 2. FULLSCREEN LOGIN PAGE */
+            .login-body {
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                background-color: #f5f5f5;
+                overflow: hidden;
+            }
+
+            /* Blurred Lighting Effects sa Background */
+            .bg-glow-topright {
+                position: absolute;
+                top: -100px;
+                right: -100px;
+                width: 500px;
+                height: 500px;
+                background: radial-gradient(circle, rgba(0, 102, 71, 0.45) 0%, rgba(0, 102, 71, 0) 70%);
+                filter: blur(50px);
+                border-radius: 50%;
+                z-index: 1;
+            }
+
+            .bg-glow-bottomleft {
+                position: absolute;
+                bottom: -100px;
+                left: -100px;
+                width: 550px;
+                height: 550px;
+                background: radial-gradient(circle, rgba(0, 102, 71, 0.5) 0%, rgba(0, 102, 71, 0) 70%);
+                filter: blur(60px);
+                border-radius: 50%;
+                z-index: 1;
+            }
+
+            .login-card-wrapper {
+                position: relative;
+                z-index: 2;
+                background: rgba(232, 232, 232, 0.85);
+                backdrop-filter: blur(10px);
+                width: 820px;
+                height: 520px;
+                border-radius: 28px;
+                box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.12);
+                display: flex;
+                overflow: hidden;
+            }
+
+            .login-form-side {
+                flex: 1.05;
+                padding: 40px 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: #e2e2e2;
+            }
+
+            .form-content-inner {
+                width: 100%;
+                max-width: 310px;
+            }
+
+            /* Style para sa maliit na green logo sa itaas ng Welcome */
+            .small-brand-logo-img {
+                width: 140px;
+                height: auto;
+                display: block;
+                margin: 0 auto 10px auto;
+            }
+
+            .login-form-side h2 {
+                margin: 0 0 4px 0;
+                color: #222222;
+                font-size: 28px;
+                font-weight: 800;
+                text-align: center;
+            }
+
+            .login-form-side p.subtitle {
+                color: #555555;
+                font-size: 14px;
+                margin: 0 0 25px 0;
+                text-align: center;
+            }
+
+            .field-label {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                color: #333333;
+                margin-bottom: 6px;
+            }
+
+            .login-input {
+                width: 100%;
+                padding: 12px 18px;
+                margin-bottom: 16px;
+                border: 1px solid #d0d0d0;
+                border-radius: 5px;
+                box-sizing: border-box;
+                background: #ffffff;
+                font-size: 13px;
+                outline: none;
+                box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+            }
+
+            .login-input::placeholder {
+                color: #b5b5b5;
+            }
+
+            .forgot-link {
+                display: block;
+                text-align: right;
+                font-size: 12px;
+                font-weight: 700;
+                color: #000000;
+                text-decoration: none;
+                margin-top: -4px;
+                margin-bottom: 22px;
+            }
+
+            .login-btn-pill {
+                background-color: #006647;
+                color: white;
+                width: 100%;
+                padding: 13px;
+                border: none;
+                border-radius: 30px;
+                font-weight: 700;
+                font-size: 16px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: 0 4px 12px rgba(0, 102, 71, 0.25);
+            }
+
+            .login-btn-pill:hover {
+                background-color: #004d35;
+                transform: translateY(-1px);
+            }
+
+            .login-brand-side {
+                flex: 1;
+                background: #006647;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 30px;
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+            }
+
+            /* Style para sa malaking white glowing logo sa kanan */
+            .glowing-brand-logo-img {
+                width: 280px;
+                height: auto;
+                filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.9)) drop-shadow(0px 0px 25px rgba(100, 230, 170, 0.7));
+            }
+
+            /* 3. MAIN SYSTEM STYLING */
+            .main-content-wrapper {
+                padding: 20px;
+            }
+            header {
+                background-color: #006647;
+                color: #FFFFFF;
+                padding: 15px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            .nav-container {
+                background-color: #FFFFFF;
+                padding: 10px;
+                border-radius: 8px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                text-align: center;
+                box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+            }
+            .btn {
+                background-color: #00664d;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin: 3px;
+            }
+            .btn:hover {
+                background-color: #00a584;
+            }
+            .btn-danger {
+                background-color: #CC0000;
+            }
+            .btn-danger:hover {
+                background-color: #FF0000;
+            }
+            .btn-edit {
+                background-color: #E67E22;
+            }
+            .btn-edit:hover {
+                background-color: #D35400;
+            }
+            section {
+                background-color: #FFFFFF;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+            }
+            input[type="text"], input[type="number"], input[type="date"], select, textarea {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                border: 1px solid #CCCCCC;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                background-color: #FFFFFF;
+            }
+            th, td {
+                border: 1px solid #DDDDDD;
+                padding: 10px;
+                text-align: left;
+                vertical-align: middle;
+            }
+            th {
+                background-color: #006650;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #F9F9F9;
+            }
+            .dashboard-box {
+                background-color: #E6F2FF;
+                border-left: 5px solid #003366;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-radius: 4px;
+            }
+            .form-grid-3 {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                text-align: left;
+                margin-bottom: 15px;
+            }
+            .form-grid-4 {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                text-align: left;
+                margin-bottom: 15px;
+            }
+            .form-card {
+                border: 1px solid #E0E0E0;
+                border-radius: 6px;
+                padding: 12px;
+                background-color: #FAFAFA;
+                box-sizing: border-box;
+            }
+            .form-card p {
+                font-size: 12px;
+                font-weight: bold;
+                color: #555;
+                margin: 0 0 5px 0;
+            }
+            .grid-span-2 {
+                grid-column: span 2;
+            }
+            .action-btn-container {
+                text-align: right;
+                margin-top: 15px;
+            }
+            .service-input-grid {
+                display: flex;
+                gap: 15px;
+                align-items: flex-end;
+                margin-bottom: 20px;
+            }
+            .service-input-grid .form-card {
+                flex: 1;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- PAGE 1: LANDING PAGE -->
+        <div id="landingPage" class="page-container active">
+            <div class="landing-wrapper">
+                <button class="get-started-btn" onclick="goToLogin()">Get Started &rarr;</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: LOGIN PAGE -->
+        <div id="loginPage" class="page-container">
+            <div class="login-body">
+                <div class="bg-glow-topright"></div>
+                <div class="bg-glow-bottomleft"></div>
+
+                <div class="login-card-wrapper">
+                    <!-- LEFT SIDE: LOGIN FORM -->
+                    <div class="login-form-side">
+                        <div class="form-content-inner">
+                            <img src="logofinal.png" alt="Roylyn E. Asuncion Optical Logo" class="small-brand-logo-img">
+
+                            <h2>Welcome!</h2>
+                            <p class="subtitle">Log in to your account.</p>
+                            
+                            <label class="field-label">Username</label>
+                            <input type="text" id="loginUser" class="login-input" placeholder="Enter username or email">
+                            
+                            <label class="field-label">Password</label>
+                            <input type="password" id="loginPass" class="login-input" placeholder="Enter password">
+                            
+                            <div style="text-align:right; margin-bottom:15px;">
+                                <a href="#" style="font-size:12px; color:#006647; text-decoration:none;">Forgot password?</a>
+                            </div>
+
+                            <button class="login-btn-pill" onclick="handleLogin()">Login</button>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE: GREEN PANEL WITH WHITE GLOWING LOGO -->
+                    <div class="login-brand-side">
+                        <img src="3.png" alt="Roylyn E. Asuncion Optical Logo" class="glowing-brand-logo-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: MAIN SYSTEM DASHBOARD -->
+        <div id="mainSystemPage" class="page-container">
+            <div class="main-content-wrapper">
+                <!-- HEADER SECTION -->
+                <header>
+                    <h1>Roylyn E. Asuncion Optical Clinic Patient Management System</h1>
+                    <p>19A Luna St., Malinao, Pasig City | Patient Management & Clinic Operations</p>
+                </header>
+
+                <!-- SYSTEM NAVIGATION BUTTONS -->
+                <div class="nav-container">
+                    <input type="button" class="btn" value="Services Offered" onclick="showSection('serviceSection')">
+                    <input type="button" class="btn" value="Patient Information" onclick="showSection('patientSection')">
+                    <input type="button" class="btn" value="Consultation & Billing" onclick="showSection('consultSection')">
+                    <input type="button" class="btn" value="Patient Records" onclick="showSection('recordsSection')">
+                    <input type="button" class="btn btn-danger" value="Logout" onclick="logoutSystem()" style="float: right;">
+                </div>
+
+                <!-- 1. PATIENT MANAGEMENT SECTION -->
+                <section id="patientSection">
+                    <center><h2>Patient Information</h2></center>
+                    <hr>
+                    <br>
+                    <form id="patientForm">
+                        <div class="form-grid-3">
+                            <div class="form-card">
+                                <p>Patient ID</p>
+                                <input type="text" id="pId" placeholder="e.g. PAT-101" required>
+                            </div>
+                            <div class="form-card">
+                                <p>Full Name</p>
+                                <input type="text" id="pName" placeholder="Juan Dela Cruz" required>
+                            </div>
+                            <div class="form-card">
+                                <p>Age</p>
+                                <input type="number" id="pAge" min="1" max="120" required>
+                            </div>
+                            <div class="form-card">
+                                <p>Gender</p>
+                                <select id="pGender">
+                                    <option value="">--Select Gender--</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-card">
+                                <p>Contact Number</p>
+                                <input type="text" id="pContact" placeholder="09123456789" required>
+                            </div>
+                            <div class="form-card">
+                                <p>Senior / PWD ID (If applicable)</p>
+                                <input type="text" id="pPwd" placeholder="N/A">
+                            </div>
+                            <div class="form-card grid-span-2">
+                                <p>Address</p>
+                                <input type="text" id="pAddress" placeholder="Enter Full Address">
+                            </div>
+                            <div class="action-btn-container" style="align-self: flex-end;">
+                                <input type="button" class="btn" value="Save Patient Records" onclick="savePatient()" style="padding: 12px 20px; font-size: 14px;">
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 2. SERVICES SECTION -->
+                <section id="serviceSection" style="display:none;">
+                    <center><h2>Medical Services Offered</h2></center>
+                    <hr>
+                    <br>
+                    <form>
+                        <div class="service-input-grid">
+                            <div class="form-card">
+                                <p>Service Name:</p>
+                                <input type="text" id="sName" placeholder="e.g. Eye Check-up">
+                            </div>
+                            <div class="form-card">
+                                <p>Fixed Cost: (PHP)</p>
+                                <input type="number" id="sCost" placeholder="0.00">
+                            </div>
+                            <div>
+                                <input type="button" class="btn" value="Add New Service" onclick="addService()" style="padding: 10px 18px;">
+                            </div>
+                        </div>
+                    </form>
+                    <h3>Service List</h3>
+                    <p id="serviceOutput"></p>
+                </section>
+
+                <!-- 3. CONSULTATION & BILLING SECTION -->
+                <section id="consultSection" style="display:none;">
+                    <center><h2>Consultation & Billing</h2></center>
+                    <hr>
+                    <br>
+                    <form>
+                        <!-- Row 1 -->
+                        <div class="form-grid-4">
+                            <div class="form-card">
+                                <p>Select Patient:</p>
+                                <select id="selectPatient">
+                                    <option value="">--Select Patient--</option>
+                                </select>
+                            </div>
+                            <div class="form-card">
+                                <p>Date of Visit:</p>
+                                <input type="date" id="cDate">
+                            </div>
+                            <div class="form-card">
+                                <p>Reason of Visit</p>
+                                <input type="text" id="cReason" placeholder="blurry vision, checkup, etc">
+                            </div>
+                            <div class="form-card">
+                                <p>Service Provided</p>
+                                <select id="selectService" onchange="calculateBilling()">
+                                    <option value="">--Select Service--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="form-grid-4">
+                            <div class="form-card">
+                                <p>Senior / PWD Discount (20%):</p>
+                                <select id="cDiscount" onchange="calculateBilling()">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                            <div class="form-card">
+                                <p>Total Amount Due (PHP):</p>
+                                <input type="number" id="cDue" readonly style="background-color: #E9ECEF;">
+                            </div>
+                            <div class="form-card">
+                                <p>Amount Paid (PHP):</p>
+                                <input type="number" id="cPaid" oninput="calculateBilling()" placeholder="0.00">
+                            </div>
+                            <div class="form-card">
+                                <p>Remaining Balance (PHP):</p>
+                                <input type="number" id="cBalance" readonly style="background-color: #E9ECEF;">
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="form-grid-4">
+                            <div class="form-card">
+                                <p>Payment Method:</p>
+                                <select id="cMethod">
+                                    <option value="Cash">Cash</option>
+                                    <option value="GCash">GCash</option>
+                                    <option value="Card">Card</option>
+                                </select>
+                            </div>
+                            <div class="form-card grid-span-2">
+                                <p>Eye Exam Findings (Optometrist Notes):</p>
+                                <input type="text" id="cFindings" placeholder="OD: -1.50, OS: -1.75 | Screening notes...">
+                            </div>
+                            <div style="align-self: flex-end; text-align: right;">
+                                <input type="button" class="btn" value="Process Consultation Billing" onclick="processConsultation()" style="padding: 12px 15px; font-size: 13px;">
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 4. RECORDS & DATABASE SECTION -->
+                <section id="recordsSection" style="display:none;">
+                    <center><h2>Patient Records Database</h2></center>
+                    <hr>
+                    <p>Search Patient Record:
+                        <input type="text" id="searchBar" placeholder="Enter Name or Patient ID" onkeyup="displayRecords()" style="max-width: 300px;">
+                        <input type="button" class="btn btn-danger" value="Delete First Patient" onclick="deleteFirstPatient()">
+                        <input type="button" class="btn btn-danger" value="Delete Last Patient" onclick="deleteLastPatient()">
+                    </p>
+                    
+                    <div class="dashboard-box">
+                        <h3>Summary Dashboard</h3>
+                        <p id="dashboardSummary"></p>
+                    </div>
+
+                    <h3>Database Output</h3>
+                    <p id="output"></p>
+                </section>
+            </div>
+        </div>
+
+        <!-- JAVASCRIPT LOGIC -->
+        <script type="text/javascript">
+            function goToLogin() {
+                document.getElementById("landingPage").classList.remove("active");
+                document.getElementById("loginPage").classList.add("active");
+            }
+
+            function handleLogin() {
+                var user = document.getElementById("loginUser").value.trim();
+                var pass = document.getElementById("loginPass").value.trim();
+
+                if (user === "roylynasuncion.optical@gmail.com" && pass === "roylynOptical1999#") {
+                    alert("Login Successful!");
+                    document.getElementById("loginPage").classList.remove("active");
+                    document.getElementById("mainSystemPage").classList.add("active");
+                    updateDropdowns();
+                    displayServices();
+                    displayRecords();
+                } else {
+                    alert("Invalid username or password! Please check your credentials.");
+                }
+            }
+
+            function logoutSystem() {
+                document.getElementById("mainSystemPage").classList.remove("active");
+                document.getElementById("landingPage").classList.add("active");
+                document.getElementById("loginUser").value = "";
+                document.getElementById("loginPass").value = "";
+            }
+
+            var patients = JSON.parse(localStorage.getItem("patientsData")) || [];
+            
+            var defaultServices = [
+                { name: "Eye Check-up", cost: 500 },
+                { name: "Cataract Screening", cost: 800 },
+                { name: "Glaucoma Screening", cost: 800 },
+                { name: "Dry Eye Assessment", cost: 600 },
+                { name: "Ishihara Test", cost: 400 }
+            ];
+            var services = JSON.parse(localStorage.getItem("servicesData")) || defaultServices;
+            
+            var consultations = JSON.parse(localStorage.getItem("consultationsData")) || [];
+
+            function saveToLocalStorage() {
+                localStorage.setItem("patientsData", JSON.stringify(patients));
+                localStorage.setItem("servicesData", JSON.stringify(services));
+                localStorage.setItem("consultationsData", JSON.stringify(consultations));
+            }
+
+            function showSection(sectionId) {
+                document.getElementById("patientSection").style.display = "none";
+                document.getElementById("serviceSection").style.display = "none";
+                document.getElementById("consultSection").style.display = "none";
+                document.getElementById("recordsSection").style.display = "none";
+
+                document.getElementById(sectionId).style.display = "block";
+
+                updateDropdowns();
+                displayServices();
+                displayRecords();
+            }
+
+            function savePatient() {
+                var pId = document.getElementById("pId").value;
+                if (pId === "") { alert("Please enter Patient ID!"); return; }
+
+                var pName = document.getElementById("pName").value;
+                if (pName === "") { alert("Please enter Full Name!"); return; }
+
+                var pAge = document.getElementById("pAge").value;
+                if (pAge < 1) { alert("Please enter a valid age!"); return; }
+
+                var pGender = document.getElementById("pGender").value;
+                if (pGender === "") { alert("Please select gender!"); return; }
+
+                var pContact = document.getElementById("pContact").value;
+                if (pContact === "") { alert("Please enter contact number!"); return; }
+
+                var pPwd = document.getElementById("pPwd").value;
+                if (pPwd === "") { pPwd = "N/A"; }
+
+                var pAddress = document.getElementById("pAddress").value;
+
+                var existingIndex = -1;
+                for (var i = 0; i < patients.length; i++) {
+                    if (patients[i].id === pId) { existingIndex = i; break; }
+                }
+
+                var confirmed = confirm("Save record for Patient: " + pName + " (" + pId + ")?");
+                if (!confirmed) { alert("Cancelled"); return; }
+
+                if (existingIndex !== -1) {
+                    patients[existingIndex].name = pName;
+                    patients[existingIndex].age = pAge;
+                    patients[existingIndex].gender = pGender;
+                    patients[existingIndex].contact = pContact;
+                    patients[existingIndex].pwd = pPwd;
+                    patients[existingIndex].address = pAddress;
+                    alert("Patient record updated successfully!");
+                } else {
+                    var newPatient = { id: pId, name: pName, age: pAge, gender: pGender, contact: pContact, pwd: pPwd, address: pAddress };
+                    patients.push(newPatient);
+                    alert("Patient registered successfully!");
+                }
+
+                saveToLocalStorage();
+
+                document.getElementById("pId").value = "";
+                document.getElementById("pName").value = "";
+                document.getElementById("pAge").value = "";
+                document.getElementById("pGender").value = "";
+                document.getElementById("pContact").value = "";
+                document.getElementById("pPwd").value = "";
+                document.getElementById("pAddress").value = "";
+
+                updateDropdowns();
+                displayRecords();
+            }
+
+            function addService() {
+                var sName = document.getElementById("sName").value;
+                var sCost = Number(document.getElementById("sCost").value);
+
+                if (sName === "") { alert("Please enter service name."); return; }
+                if (sCost <= 0) { alert("Please enter a valid cost."); return; }
+
+                services.push({ name: sName, cost: sCost });
+                saveToLocalStorage();
+
+                alert("New service added successfully!");
+                document.getElementById("sName").value = "";
+                document.getElementById("sCost").value = "";
+
+                displayServices();
+                updateDropdowns();
+            }
+
+            function displayServices() {
+                var text = "<table><tr><th>Service Name</th><th>Cost (PHP)</th><th style='width: 150px; text-align: center;'>Actions</th></tr>";
+                for (var i = 0; i < services.length; i++) {
+                    text += "<tr>" +
+                                "<td>" + services[i].name + "</td>" +
+                                "<td>PHP " + Number(services[i].cost).toFixed(2) + "</td>" +
+                                "<td style='text-align: center;'>" +
+                                    "<button class='btn btn-edit' onclick='editService(" + i + ")' style='padding: 6px 10px; font-size: 11px;'>Edit</button> " +
+                                    "<button class='btn btn-danger' onclick='deleteService(" + i + ")' style='padding: 6px 10px; font-size: 11px;'>Delete</button>" +
+                                "</td>" +
+                            "</tr>";
+                }
+                text += "</table>";
+                document.getElementById("serviceOutput").innerHTML = text;
+            }
+
+            function editService(index) {
+                var currentService = services[index];
+                var newName = prompt("Edit Service Name:", currentService.name);
+                if (newName === null) return; // Cancelled
+                
+                var newCostStr = prompt("Edit Service Cost (PHP):", currentService.cost);
+                if (newCostStr === null) return; // Cancelled
+
+                var newCost = Number(newCostStr);
+                if (newName.trim() === "") {
+                    alert("Service name cannot be empty!");
+                    return;
+                }
+                if (isNaN(newCost) || newCost <= 0) {
+                    alert("Please enter a valid cost amount!");
+                    return;
+                }
+
+                services[index].name = newName.trim();
+                services[index].cost = newCost;
+                saveToLocalStorage();
+
+                alert("Service updated successfully!");
+                displayServices();
+                updateDropdowns();
+            }
+
+            function deleteService(index) {
+                var serviceName = services[index].name;
+                var confirmed = confirm("Are you sure you want to delete the service: " + serviceName + "?");
+                if (confirmed) {
+                    services.splice(index, 1);
+                    saveToLocalStorage();
+                    alert("Service deleted successfully!");
+                    displayServices();
+                    updateDropdowns();
+                }
+            }
+
+            function updateDropdowns() {
+                var patientDropdown = document.getElementById("selectPatient");
+                var serviceDropdown = document.getElementById("selectService");
+
+                if (patientDropdown) {
+                    var currentPatientVal = patientDropdown.value;
+                    var pHtml = '<option value="">--Select Patient--</option>';
+                    for (var i = 0; i < patients.length; i++) {
+                        pHtml += '<option value="' + patients[i].id + '">' + patients[i].name + ' (' + patients[i].id + ')</option>';
+                    }
+                    patientDropdown.innerHTML = pHtml;
+                    patientDropdown.value = currentPatientVal;
+                }
+
+                if (serviceDropdown) {
+                    var currentServiceVal = serviceDropdown.value;
+                    var sHtml = '<option value="">--Select Service--</option>';
+                    for (var j = 0; j < services.length; j++) {
+                        sHtml += '<option value="' + services[j].name + '">' + services[j].name + ' (PHP ' + Number(services[j].cost).toFixed(2) + ')</option>';
+                    }
+                    serviceDropdown.innerHTML = sHtml;
+                    serviceDropdown.value = currentServiceVal;
+                }
+            }
+
+            function calculateBilling() {
+                var selectedServiceName = document.getElementById("selectService").value;
+                var discount = document.getElementById("cDiscount").value;
+                var paid = Number(document.getElementById("cPaid").value);
+
+                var baseCost = 0;
+                for (var i = 0; i < services.length; i++) {
+                    if (services[i].name === selectedServiceName) { baseCost = services[i].cost; break; }
+                }
+
+                var totalDue = baseCost;
+                if (discount === "Yes") { totalDue = baseCost * 0.80; }
+
+                var balance = totalDue - paid;
+                if (balance < 0) { balance = 0; }
+
+                document.getElementById("cDue").value = totalDue.toFixed(2);
+                document.getElementById("cBalance").value = balance.toFixed(2);
+            }
+
+            function processConsultation() {
+                var pId = document.getElementById("selectPatient").value;
+                if (pId === "") { alert("Please select a patient!"); return; }
+
+                var cDate = document.getElementById("cDate").value;
+                if (cDate === "") { alert("Please select visit date!"); return; }
+
+                var cReason = document.getElementById("cReason").value;
+                var cFindings = document.getElementById("cFindings").value;
+                var service = document.getElementById("selectService").value;
+                if (service === "") { alert("Please select service provided!"); return; }
+
+                var due = Number(document.getElementById("cDue").value);
+                var paid = Number(document.getElementById("cPaid").value);
+                var balance = Number(document.getElementById("cBalance").value);
+                var method = document.getElementById("cMethod").value;
+
+                var confirmed = confirm("Confirm consultation billing process?");
+                if (!confirmed) return;
+
+                var newConsultation = {
+                    patientId: pId,
+                    date: cDate,
+                    reason: cReason,
+                    service: service,
+                    due: due,
+                    paid: paid,
+                    balance: balance,
+                    method: method,
+                    findings: cFindings
+                };
+
+                consultations.push(newConsultation);
+                saveToLocalStorage();
+
+                alert("Consultation and billing processed successfully!");
+                displayRecords();
+            }
+
+            function displayRecords() {
+                var searchQuery = document.getElementById("searchBar").value.toLowerCase();
+                var text = "<table><tr><th>Patient ID</th><th>Full Name</th><th>Age</th><th>Gender</th><th>Contact</th><th>PWD/Senior</th><th>Address</th></tr>";
+                
+                var filteredCount = 0;
+                for (var i = 0; i < patients.length; i++) {
+                    var p = patients[i];
+                    if (p.name.toLowerCase().includes(searchQuery) || p.id.toLowerCase().includes(searchQuery)) {
+                        text += "<tr><td>" + p.id + "</td><td>" + p.name + "</td><td>" + p.age + "</td><td>" + p.gender + "</td><td>" + p.contact + "</td><td>" + p.pwd + "</td><td>" + p.address + "</td></tr>";
+                        filteredCount++;
+                    }
+                }
+                text += "</table>";
+                document.getElementById("output").innerHTML = text;
+
+                var summaryText = "Total Registered Patients: <b>" + patients.length + "</b> | Total Consultations Recorded: <b>" + consultations.length + "</b>";
+                document.getElementById("dashboardSummary").innerHTML = summaryText;
+            }
+
+            function deleteFirstPatient() {
+                if (patients.length === 0) {
+                    alert("No patient records to delete!");
+                    return;
+                }
+                var confirmed = confirm("Delete the first patient record (" + patients[0].name + ")?");
+                if (confirmed) {
+                    patients.shift();
+                    saveToLocalStorage();
+                    displayRecords();
+                    updateDropdowns();
+                    alert("First patient record deleted.");
+                }
+            }
+
+            function deleteLastPatient() {
+                if (patients.length === 0) {
+                    alert("No patient records to delete!");
+                    return;
+                }
+                var lastPatient = patients[patients.length - 1];
+                var confirmed = confirm("Delete the last patient record (" + lastPatient.name + ")?");
+                if (confirmed) {
+                    patients.pop();
+                    saveToLocalStorage();
+                    displayRecords();
+                    updateDropdowns();
+                    alert("Last patient record deleted.");
+                }
+            }
+        </script>
+    </body>
+</html>
